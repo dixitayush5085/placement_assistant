@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://ayush0809:ayush0809@cluster0.errkv.mongodb.net/placement_assistant?retryWrites=true&w=majority"
+}

@@ -1,7 +1,10 @@
 var express = require('express');
 const manager = require('./routes/manager');
-
+const db = require('./models/db')
+const managerDB = require('./models/manager');
 var app = express();
+
+app.use(express.urlencoded({ extended: false }));
 var port = 8000;
 
 app.use('/manager', manager);
@@ -12,5 +15,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`)
+    console.log(`App listening on port ${port}!`)
 });
