@@ -96,7 +96,10 @@ router.
             { "company_name": company_name }
         )
             .then((item) => {
-                res.status(200).send(item);
+                res.status(200).send({
+                    item,
+                    msg: 'Job updated successfully'
+                });
             })
             .catch(err => {
                 res.status(400).send({
@@ -117,7 +120,10 @@ router.
             { "_id": _id },
         ).
             then((item) => {
-                res.status(200).send(item);
+                res.status(200).send({ 
+                    item,
+                    msg: 'Job deleted successfully'
+                });
             })
             .catch(err => {
                 res.status(400).send({
