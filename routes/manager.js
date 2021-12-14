@@ -1,7 +1,6 @@
 const express = require('express');
 const manager = require('../models/manager');
 const job = require('../models/job');
-const { route } = require('express/lib/application');
 var app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -49,11 +48,17 @@ router.
         );
 
         newJob.save()
-            .then(item => console.log(item))
-            .catch(err => console.log(err));
-
-        console.log(company_name, poc, poc_details);
-        res.status(200).send(req.body);
+            .then(item => {
+                res.status(200).send({
+                    item,
+                    msg: 'Job added successfully'
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    err
+                });
+            });
     });
 
 /*
@@ -67,43 +72,59 @@ router.
         })
     })
     .post((req, res) => {
-        job.find().then((item) => {
-            res.status(200).send(item);
-        })
+        job.find()
+            .then((item) => {
+                res.status(200).send(item);
+            }).catch(err => {
+                res.status(400).send({
+                    err
+                });
+            });
+
     });
 
- /* 
- Endpoint to update job using id
- */   
+/* 
+Endpoint to update job using id
+*/
 router.
     route("/update-job")
     .get()
     .post((req, res) => {
-        const { _id, company_name} = req.body; 
+        const { _id, company_name } = req.body;
         job.findOneAndUpdate(
-            {"_id": _id},
-            {"company_name": company_name}
-            ).
-        then((item) => {
-            res.status(200).send(item);
-        })
+            { "_id": _id },
+            { "company_name": company_name }
+        )
+            .then((item) => {
+                res.status(200).send(item);
+            })
+            .catch(err => {
+                res.status(400).send({
+                    err
+                });
+            });
     })
 
- /* 
- Endpoint to delete job using id
- */       
+/* 
+Endpoint to delete job using id
+*/
 router.
     route("/delete-job")
     .get()
     .post((req, res) => {
-        const { _id } = req.body; 
+        const { _id } = req.body;
         job.findOneAndDelete(
-            {"_id": _id},
-            ).
-        then((item) => {
-            console.log('job deleted => ', item);
-            res.status(200).send(item);
-        })
-    })    
+            { "_id": _id },
+        ).
+            then((item) => {
+                res.status(200).send(item);
+            })
+            .catch(err => {
+                res.status(400).send({
+                    err
+                });
+            });
+    })
 
 module.exports = router;
+
