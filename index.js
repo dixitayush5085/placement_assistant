@@ -4,7 +4,8 @@ const db = require('./models/db')
 const managerDB = require('./models/manager');
 var app = express();
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 var port = 8000;
 
 app.use('/manager', manager);

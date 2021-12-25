@@ -1,6 +1,7 @@
 const express = require('express');
 const manager = require('../models/manager');
 const job = require('../models/job');
+const student = require('../models/student')
 var app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +19,6 @@ router.
     })
     .post((req, res) => {
         const { username, password } = req.body;
-        console.log(username);
 
         manager.find().then((item) => {
             item.forEach((item) => {
@@ -131,6 +131,36 @@ router.
                 });
             });
     })
+
+router.
+        route("/add-student-email")
+        .post((req, res) => {
+            const { email } =  req.body;
+            const newStudent = new student({
+                email: email
+            });
+
+            newStudent.save()
+            .then(item => {
+                res.status(200).send({
+                    item,
+                    msg: 'Student added successfully'
+                });
+            })
+            .catch(err => {
+                res.status(400).send({
+                    err
+                });
+            });
+        })
+
+router.
+        route("/all-students")
+        .get((req, res) => {
+            student.find().then((item) => {
+                res.status(200).send(item);
+            })
+        })         
 
 module.exports = router;
 
